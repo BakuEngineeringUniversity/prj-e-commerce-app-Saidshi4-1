@@ -27,8 +27,8 @@ public class CartManager implements CartService {
     }
 
     @Override
-    public List<CartProductDto> getCartProducts(Integer userId) {
-        return cartMapper.mapEntityToCartDtos(cartDao.findCartByUserId(userId));
+    public List<CartProductDto> getCartProducts(Integer phoneNumber) {
+        return cartMapper.mapEntityToCartDtos(cartDao.findCartByUserId(phoneNumber));
     }
 
 

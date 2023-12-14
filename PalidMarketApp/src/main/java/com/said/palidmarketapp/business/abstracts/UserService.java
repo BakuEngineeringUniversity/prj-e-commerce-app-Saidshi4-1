@@ -1,5 +1,6 @@
 package com.said.palidmarketapp.business.abstracts;
 
+import com.said.palidmarketapp.core.utilities.results.Result;
 import com.said.palidmarketapp.mapper.dto.UserDto;
 import com.said.palidmarketapp.mapper.dto.UserLoginDto;
 import com.said.palidmarketapp.mapper.dto.UserSaveDto;

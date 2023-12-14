@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CartDao extends JpaRepository<Cart, Integer> {
-    @Query("select c from Cart c where c.user.id=:userId")
-    List<Cart> findCartByUserId(Integer userId);
+    @Query("select c from Cart c where c.user.phoneNumber=:phoneNumber")
+    List<Cart> findCartByUserId(Integer phoneNumber);
 }

@@ -23,8 +23,8 @@ public class CartController {
     }
 
     @GetMapping("{userId}")
-    public List<CartProductDto> getCartProducts(@PathVariable Integer userId){
-        return cartManager.getCartProducts(userId);
+    public List<CartProductDto> getCartProducts(@PathVariable Integer phoneNumber){
+        return cartManager.getCartProducts(phoneNumber);
     }
 
 }

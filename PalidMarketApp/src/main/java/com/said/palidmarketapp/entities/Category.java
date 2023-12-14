@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "categories")
 
+
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +19,8 @@ public class Category {
     private int id;
     @Column(name = "name")
     private String name;
+    @Column(name = "image")
+    private String image;
+
+
 }
