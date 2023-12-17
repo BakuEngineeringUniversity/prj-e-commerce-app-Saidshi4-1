@@ -1,6 +1,8 @@
 package com.said.palidmarketapp.business.concretes;
 
 import com.said.palidmarketapp.business.abstracts.CategoryService;
+import com.said.palidmarketapp.core.utilities.results.DataResult;
+import com.said.palidmarketapp.core.utilities.results.SuccessDataResult;
 import com.said.palidmarketapp.dataAccess.abstracts.CategoryDao;
 import com.said.palidmarketapp.entities.Category;
 import lombok.AllArgsConstructor;

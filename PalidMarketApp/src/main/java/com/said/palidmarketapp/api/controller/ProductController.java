@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping("/{getByCategoryId}")
-    public List<ProductDto> getByCategoryId(@PathVariable int getByCategoryId){
+    public DataResult<List<ProductDto>> getByCategoryId(@PathVariable int getByCategoryId){
         return productService.getByCategoryId(getByCategoryId);
     }
 

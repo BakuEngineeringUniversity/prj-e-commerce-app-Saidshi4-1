@@ -1,6 +1,7 @@
 package com.said.palidmarketapp.api.controller;
 
 import com.said.palidmarketapp.business.abstracts.CategoryService;
+import com.said.palidmarketapp.core.utilities.results.DataResult;
 import com.said.palidmarketapp.entities.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

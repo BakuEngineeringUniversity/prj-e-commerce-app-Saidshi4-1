@@ -1,5 +1,7 @@
 package com.said.palidmarketapp.business.abstracts;
 
+import com.said.palidmarketapp.core.utilities.results.DataResult;
+import com.said.palidmarketapp.core.utilities.results.Result;
 import com.said.palidmarketapp.mapper.dto.CartDto;
 import com.said.palidmarketapp.mapper.dto.CartProductDto;
 
@@ -7,6 +9,6 @@ import java.util.List;
 
 
 public interface CartService {
-    void add(CartDto cartDto);
-    List<CartProductDto> getCartProducts(Integer phoneNumber);
+    Result add(CartDto cartDto);
+    DataResult<List<CartProductDto>> getCartProducts(Integer phoneNumber);
 }
