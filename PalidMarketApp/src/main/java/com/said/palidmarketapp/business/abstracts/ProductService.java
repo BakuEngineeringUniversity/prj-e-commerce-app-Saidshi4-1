@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ProductService {
     Result add(ProductDto productDto);
-    DataResult<List<ProductDto>> getByCategoryId(int id);
+    List<ProductDto> getByCategoryId(int id);
     DataResult<List<ProductDto>> getAll();
 }

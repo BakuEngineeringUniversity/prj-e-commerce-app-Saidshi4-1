@@ -90,7 +90,7 @@ public class UserController  {
 
 
     @PatchMapping("/{phoneNumber}/{firstName}")
-    public ResponseEntity<Result> updateFirstName(@PathVariable String phoneNumber, @RequestBody String firstName){
+    public ResponseEntity<Result> updateFirstName(@PathVariable String phoneNumber, @PathVariable String firstName){
         try {
             Result result = userService.updateFirstName(phoneNumber, firstName);
             if (result.isSuccess()) {
@@ -104,7 +104,7 @@ public class UserController  {
     }
 
     @PatchMapping("/{phoneNumber}/{lastName}")
-    public ResponseEntity<Result> updateLastName(@PathVariable String phoneNumber, @RequestBody String lastName){
+    public ResponseEntity<Result> updateLastName(@PathVariable String phoneNumber, @PathVariable String lastName){
         try {
             Result result = userService.updateLastName(phoneNumber, lastName);
             if (result.isSuccess()) {

@@ -30,10 +30,10 @@ public class ProductManager implements ProductService {
     }
 
     @Override
-    public DataResult<List<ProductDto>> getByCategoryId(int id) {
+    public List<ProductDto> getByCategoryId(int id) {
         List<Product> products = productDao.getByCategoryId(id);
 
-        return new SuccessDataResult<>(products.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList()), "Getting product is successful by id");
+        return products.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
     }
 
     @Override
