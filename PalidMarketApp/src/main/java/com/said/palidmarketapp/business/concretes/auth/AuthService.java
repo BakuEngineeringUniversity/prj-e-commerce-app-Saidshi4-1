@@ -24,13 +24,16 @@ public class AuthService {
     private final AuthenticationManager authManager;
     private final UserMapper userMapper;
     public void register(UserRegisterRequestDto requestDto) {
-        var user = UserRegisterRequestDto.builder()
-                .phoneNumber(requestDto.getPhoneNumber())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
-                .roles(requestDto.getRoles())
-                .build();
+//        var user = UserRegisterRequestDto.builder()
+//                .phoneNumber(requestDto.getPhoneNumber())
+//                .password(passwordEncoder.encode(requestDto.getPassword()))
+//                .firstName(requestDto.getFirstName())
+//                .lastName(requestDto.getLastName())
+//                .roles(requestDto.getRoles())
+//                .build();
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
 
-        userRepository.save(userMapper.mapRegisterRequestDtoToEntity(user));
+        userRepository.save(userMapper.mapRegisterRequestDtoToEntity(requestDto));
     }
 
     public AuthenticationDto authenticate(AuthRequestDto authRequestDto) {
@@ -40,7 +43,7 @@ public class AuthService {
                         authRequestDto.getPassword()
                 )
         );
-        User user = userRepository.findByPhoneNumber(authRequestDto.getPhoneNumber());
+        User user = userRepository.findUserByPhoneNumber(authRequestDto.getPhoneNumber());
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationDto.builder()
                 .token(jwtToken)
