@@ -10,7 +10,6 @@ import com.said.palidmarketapp.mapper.dto.UserSaveDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.control.MappingControl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +39,7 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public DataResult<UserLoginDto> loginUser(UserLoginDto userLoginDto) {
+    public UserLoginDto loginUser(UserLoginDto userLoginDto) {
         log.info("application.loginUser.start");
         String phoneNumber = userLoginDto.getPhoneNumber();
         String password = userLoginDto.getPassword();
@@ -50,7 +49,7 @@ public class UserManager implements UserService {
         if (userExists){
             User user = modelMapper.map(userLoginDto, User.class);
             log.info("application.loginUser.end");
-            return new SuccessDataResult<>(modelMapper.map(userDao.findOneByPhoneNumberAndPassword(user.getPhoneNumber(), user.getPassword()), UserLoginDto.class), "User login successfully");
+            return modelMapper.map(userDao.findOneByPhoneNumberAndPassword(user.getPhoneNumber(), user.getPassword()), UserLoginDto.class);
         }
         else throw new IllegalArgumentException("Wrong phone number or password");
     }
@@ -87,10 +86,15 @@ public class UserManager implements UserService {
             user.setPassword(newUser.getPassword());
             userDao.saveAndFlush(user);
             log.info("application.updateUser.end.successfully");
-            return new SuccessDataResult<User>(user,"Updating is successfully");
+            return new SuccessDataResult<>(user, "Updating is successfully");
         }
         log.info("application.updateUser.end.unsuccessfully");
         return new ErrorDataResult<User>(user, "User does not exists");
+    }
+
+    @Override
+    public Integer findIdByPhoneNumber(String phoneNumber) {
+        return userDao.findIdByPhoneNumber(phoneNumber);
     }
 
     @Override

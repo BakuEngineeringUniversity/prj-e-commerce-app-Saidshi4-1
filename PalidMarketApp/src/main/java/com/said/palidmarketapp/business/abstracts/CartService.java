@@ -10,5 +10,6 @@ import java.util.List;
 
 public interface CartService {
     Result add(CartDto cartDto);
-    DataResult<List<CartProductDto>> getCartProducts(Integer phoneNumber);
+    DataResult<List<CartProductDto>> getCartProducts(Integer userId);
+    DataResult<List<CartDto>> getAll();
 }

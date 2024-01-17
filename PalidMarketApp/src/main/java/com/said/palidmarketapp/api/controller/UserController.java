@@ -30,14 +30,12 @@ public class UserController  {
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<DataResult<UserLoginDto>> loginUser(@RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<UserLoginDto> loginUser(@RequestBody UserLoginDto userLoginDto) {
         try {
-            DataResult<UserLoginDto> resultUser = userService.loginUser(userLoginDto);
-            if (resultUser.isSuccess()) {
+            UserLoginDto resultUser = userService.loginUser(userLoginDto);
+
                 return ResponseEntity.ok(resultUser);
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultUser);
-            }
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -115,5 +113,10 @@ public class UserController  {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @GetMapping("/{phoneNumber}")
+    public Integer findIdByPhoneNumber(@PathVariable String phoneNumber){
+        return userService.findIdByPhoneNumber(phoneNumber);
     }
 }

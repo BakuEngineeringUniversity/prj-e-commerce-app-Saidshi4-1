@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/carts")
 @RequiredArgsConstructor
 public class CartController {
+    private final CartService cartService;
     private final CartManager cartManager;
 
     @PostMapping("/add")
@@ -25,9 +26,13 @@ public class CartController {
         return cartManager.add(cartDto);
     }
 
-    @GetMapping("{phoneNumber}")
-    public DataResult<List<CartProductDto>> getCartProducts(@PathVariable Integer phoneNumber){
-        return cartManager.getCartProducts(phoneNumber);
+    @GetMapping("{userId}")
+    public DataResult<List<CartProductDto>> getCartProducts(@PathVariable Integer userId){
+        return cartService.getCartProducts(userId);
     }
 
+    @GetMapping("/getAllCart")
+    public DataResult<List<CartDto>> getAll(){
+        return cartManager.getAll();
+    }
 }

@@ -6,6 +6,7 @@ import com.said.palidmarketapp.core.utilities.results.Result;
 import com.said.palidmarketapp.core.utilities.results.SuccessDataResult;
 import com.said.palidmarketapp.core.utilities.results.SuccessResult;
 import com.said.palidmarketapp.entities.Product;
+import com.said.palidmarketapp.mapper.dto.CategoryDto;
 import com.said.palidmarketapp.mapper.dto.ProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class ProductController {
     }
 
     @GetMapping("/{getByCategoryId}")
-    public List<ProductDto> getByCategoryId(@PathVariable int getByCategoryId){
+    public DataResult<List<ProductDto>> getByCategoryId(@PathVariable int getByCategoryId){
         return productService.getByCategoryId(getByCategoryId);
     }
 
