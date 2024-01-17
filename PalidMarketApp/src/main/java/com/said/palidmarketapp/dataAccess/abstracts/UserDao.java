@@ -10,7 +10,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
     boolean existsByPhoneNumberAndPassword(String phoneNumber, String password);
 
     void deleteByPhoneNumber(String phoneNumber);
-
+    @Query("select * from User where phoneNumber=:phoneNumber")
     User findByPhoneNumber(String phoneNumber);
     @Query("select id from User where phoneNumber=:phoneNumber")
     Integer findIdByPhoneNumber(String phoneNumber);

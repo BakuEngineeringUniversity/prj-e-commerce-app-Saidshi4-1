@@ -30,9 +30,9 @@ public class UserController  {
         }
     }
     @PostMapping("/login")
-    public ResponseEntity<UserLoginDto> loginUser(@RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<DataResult<UserLoginDto>> loginUser(@RequestBody UserLoginDto userLoginDto) {
         try {
-            UserLoginDto resultUser = userService.loginUser(userLoginDto);
+            DataResult<UserLoginDto> resultUser = userService.loginUser(userLoginDto);
 
                 return ResponseEntity.ok(resultUser);
 
@@ -116,7 +116,7 @@ public class UserController  {
     }
 
     @GetMapping("/{phoneNumber}")
-    public Integer findIdByPhoneNumber(@PathVariable String phoneNumber){
+    public DataResult<Integer> findIdByPhoneNumber(@PathVariable String phoneNumber){
         return userService.findIdByPhoneNumber(phoneNumber);
     }
 }

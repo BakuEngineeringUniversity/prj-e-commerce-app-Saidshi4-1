@@ -12,12 +12,11 @@ import java.util.List;
 
 public interface UserService {
     DataResult <UserSaveDto> saveUser(UserSaveDto userSaveDto);
-    UserLoginDto loginUser(UserLoginDto userLoginDto);
+    DataResult<UserLoginDto> loginUser(UserLoginDto userLoginDto);
     DataResult <List <UserDto>> getAll();
     Result deleteUserByPhoneNumber(String phoneNumber);
     Result updateFirstName(String phoneNumber, String newFirstName);
     Result updateLastName(String phoneNumber, String newLastName);
     Result  updateUser(UserSaveDto newUser);
-
-    Integer findIdByPhoneNumber(String phoneNumber);
+    DataResult<Integer> findIdByPhoneNumber(String phoneNumber);
 }

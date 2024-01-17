@@ -39,7 +39,7 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public UserLoginDto loginUser(UserLoginDto userLoginDto) {
+    public DataResult<UserLoginDto> loginUser(UserLoginDto userLoginDto) {
         log.info("application.loginUser.start");
         String phoneNumber = userLoginDto.getPhoneNumber();
         String password = userLoginDto.getPassword();
@@ -49,9 +49,9 @@ public class UserManager implements UserService {
         if (userExists){
             User user = modelMapper.map(userLoginDto, User.class);
             log.info("application.loginUser.end");
-            return modelMapper.map(userDao.findOneByPhoneNumberAndPassword(user.getPhoneNumber(), user.getPassword()), UserLoginDto.class);
+            return new SuccessDataResult<>(modelMapper.map(userDao.findOneByPhoneNumberAndPassword(user.getPhoneNumber(), user.getPassword()), UserLoginDto.class), "User logins successfully");
         }
-        else throw new IllegalArgumentException("Wrong phone number or password");
+        else return new ErrorDataResult<>(null, "Wrong phone number or password");
     }
 
     @Override
@@ -89,12 +89,15 @@ public class UserManager implements UserService {
             return new SuccessDataResult<>(user, "Updating is successfully");
         }
         log.info("application.updateUser.end.unsuccessfully");
-        return new ErrorDataResult<User>(user, "User does not exists");
+        return new ErrorDataResult<>(null, "User does not exists");
     }
 
     @Override
-    public Integer findIdByPhoneNumber(String phoneNumber) {
-        return userDao.findIdByPhoneNumber(phoneNumber);
+    public DataResult<Integer> findIdByPhoneNumber(String phoneNumber) {
+        Integer id = userDao.findIdByPhoneNumber(phoneNumber);
+        if(null != id){
+            return new SuccessDataResult<>(id, "Finding of id is successfully");
+        }else return new ErrorDataResult<>(null, "Id is not exist");
     }
 
     @Override
