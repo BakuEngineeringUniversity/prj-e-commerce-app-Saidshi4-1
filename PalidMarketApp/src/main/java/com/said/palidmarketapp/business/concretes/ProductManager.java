@@ -9,12 +9,15 @@ import com.said.palidmarketapp.mapper.dto.CategoryDto;
 import com.said.palidmarketapp.mapper.dto.ProductDto;
 import com.said.palidmarketapp.mapstruct.CategoryMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductManager implements ProductService {
@@ -34,15 +37,29 @@ public class ProductManager implements ProductService {
     @Override
     public DataResult<List<ProductDto>> getByCategoryId(int id) {
         List<Product> products = productDao.getByCategoryId(id);
-        if (products != null){
-            return new SuccessDataResult<>(products.stream().map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList()), "Getting categories is successfully");
-        }
+        List<ProductDto> productDtos = products.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
 
-        return new ErrorDataResult<>(null, "Getting categories is unsuccessfully");
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            ProductDto productDto = productDtos.get(i);
+
+            if (product.getCategory() != null) {
+                Category category = product.getCategory();
+                productDto.setCategoryDto(categoryMapper.mapEntityToDto(category));
+            }
+        }
+        if (modelMapper != null && categoryMapper != null) {
+            return new SuccessDataResult<>(productDtos, "Data Listed");
+        } else {
+            return new ErrorDataResult<>(null,"ModelMapper or CategoryMapper is null");
+        }
     }
 
     @Override
     public DataResult<List<ProductDto>> getAll() {
+
         List<Product> products = productDao.findAll();
         List<ProductDto> productDtos = products.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
@@ -61,6 +78,38 @@ public class ProductManager implements ProductService {
             return new SuccessDataResult<>(productDtos, "Data Listed");
         } else {
             return new ErrorDataResult<>(null,"ModelMapper or CategoryMapper is null");
+        }
+    }
+
+    @Override
+    public Result deleteProduct(int id) {
+        log.info("deleteProduct.start");
+        if (productDao.existsById(id)){
+            productDao.deleteById(id);
+            log.info("deleteProduct.end.successfully");
+            return new SuccessResult("Product is deleted successfully");
+        }
+        else {
+            log.info("deleteProduct.end.unsuccessfully");
+            return new ErrorResult("Product is not exist by id");
+        }
+    }
+
+    @Override
+    public Result updatePrice(int id, double price) {
+        log.info("updatePrice.start");
+
+        Optional<Product> optionalProduct = productDao.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setUnitPrice(price);
+            productDao.saveAndFlush(product);
+            log.info("updatePrice.end.successfully");
+            return new SuccessResult("Price update successfully");
+        } else {
+            log.info("updateProduct.end.unsuccessfully");
+            return new ErrorResult("Product not found with id: " + id);
         }
     }
 }

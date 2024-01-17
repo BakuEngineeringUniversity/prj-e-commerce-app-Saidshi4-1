@@ -23,38 +23,6 @@ public class UserManager implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public DataResult <UserSaveDto> saveUser(UserSaveDto userSaveDto) {
-        log.info("application.saveUser.start");
-        String phoneNumber = userSaveDto.getPhoneNumber();
-
-        boolean phoneNumberExists = userDao.existsByPhoneNumber(phoneNumber);
-
-        if (phoneNumberExists) {
-            throw new IllegalArgumentException("This phone number is already in use.");
-        } else {
-            User user = modelMapper.map(userSaveDto, User.class);
-            log.info("application.saveUser.end");
-            return new SuccessDataResult<>(modelMapper.map(userDao.save(user), UserSaveDto.class), "User saved successfully");
-        }
-    }
-
-    @Override
-    public DataResult<UserLoginDto> loginUser(UserLoginDto userLoginDto) {
-        log.info("application.loginUser.start");
-        String phoneNumber = userLoginDto.getPhoneNumber();
-        String password = userLoginDto.getPassword();
-
-        boolean userExists = userDao.existsByPhoneNumberAndPassword(phoneNumber, password);
-
-        if (userExists){
-            User user = modelMapper.map(userLoginDto, User.class);
-            log.info("application.loginUser.end");
-            return new SuccessDataResult<>(modelMapper.map(userDao.findOneByPhoneNumberAndPassword(user.getPhoneNumber(), user.getPassword()), UserLoginDto.class), "User logins successfully");
-        }
-        else return new ErrorDataResult<>(null, "Wrong phone number or password");
-    }
-
-    @Override
     public DataResult<List<UserDto>> getAll() {
         log.info("application.getAllUser.start");
         List <User> users = userDao.findAll();

@@ -11,8 +11,6 @@ import com.said.palidmarketapp.mapper.dto.UserSaveDto;
 import java.util.List;
 
 public interface UserService {
-    DataResult <UserSaveDto> saveUser(UserSaveDto userSaveDto);
-    DataResult<UserLoginDto> loginUser(UserLoginDto userLoginDto);
     DataResult <List <UserDto>> getAll();
     Result deleteUserByPhoneNumber(String phoneNumber);
     Result updateFirstName(String phoneNumber, String newFirstName);

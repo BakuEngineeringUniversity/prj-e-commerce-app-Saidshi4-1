@@ -12,8 +12,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegisterRequestDto {
+    private String firstName;
+    private String lastName;
     private String phoneNumber;
     private String password;
     private Set<RoleDto> roles;
-
 }

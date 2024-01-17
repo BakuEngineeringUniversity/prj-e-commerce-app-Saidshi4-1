@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,20 +25,13 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/v1/auth/register").permitAll()
                                 .requestMatchers("/v1/auth/login").permitAll()
-                                .requestMatchers("/v1/auth/user/**").hasAnyRole("USER","ADMIN")
-                                .requestMatchers("/v1/products/public/**").permitAll()
-                                .requestMatchers("/v1/carSalons/public/**").permitAll()
-                                .requestMatchers("/v1/products/user/**").hasAnyRole("USER","ADMIN")
-                                .requestMatchers("/v1/brands/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/v1/carSalons/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/v1/cities/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/v1/models/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/v1/subModels/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/users/admin/*").hasRole("ADMIN")
+                                .requestMatchers("/api/users/user/*").hasAnyRole("USER","ADMIN")
                                 .requestMatchers(permitSwagger).permitAll()
                                 .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider);

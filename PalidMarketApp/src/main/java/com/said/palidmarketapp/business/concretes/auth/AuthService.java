@@ -1,5 +1,6 @@
 package com.said.palidmarketapp.business.concretes.auth;
 
+import com.said.palidmarketapp.core.utilities.results.*;
 import com.said.palidmarketapp.dataAccess.abstracts.UserDao;
 import com.said.palidmarketapp.entities.User;
 import com.said.palidmarketapp.mapper.dto.auth.AuthRequestDto;
@@ -10,9 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,37 +25,35 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
     private final UserMapper userMapper;
-    public void register(UserRegisterRequestDto requestDto) {
-        var user = UserRegisterRequestDto.builder()
-                .phoneNumber(requestDto.getPhoneNumber())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
-                .roles(requestDto.getRoles())
-                .build();
+    public Result register(UserRegisterRequestDto requestDto) {
+        log.info("authService.register.start");
+        if (!userRepository.existsByPhoneNumber(requestDto.getPhoneNumber())){
+            requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+            User user = userMapper.mapRegisterRequestDtoToEntity(requestDto);
+            userRepository.save(user);
+            log.info("authService.register.end.successfully");
 
-        userRepository.save(userMapper.mapRegisterRequestDtoToEntity(user));
+            return new SuccessResult("User register successfully");
+        }else {
+            log.info("authService.register.end.unsuccessfully");
+            return new ErrorResult("Phone number already exist");
+        }
     }
 
-    public AuthenticationDto authenticate(AuthRequestDto authRequestDto) {
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authRequestDto.getPhoneNumber(),
-                        authRequestDto.getPassword()
-                )
-        );
-        User user = userRepository.findByPhoneNumber(authRequestDto.getPhoneNumber());
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationDto.builder()
-                .token(jwtToken)
-                .build();
-    }
-
-    public void deleteUser(Integer userId) {
-        log.info("ActionLog.deleteUser.start");
-        userRepository.deleteById(userId);
-        log.info("ActionLog.deleteUser.end");
-    }
-
-    public static User getUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public DataResult<AuthenticationDto> authenticate(AuthRequestDto authRequestDto) {
+        if (userRepository.existsByPhoneNumber(authRequestDto.getPhoneNumber())){
+            authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authRequestDto.getPhoneNumber(),
+                            authRequestDto.getPassword()
+                    )
+            );
+            User user = userRepository.findUserByPhoneNumber(authRequestDto.getPhoneNumber());
+            var jwtToken = jwtService.generateToken(user);
+            return new SuccessDataResult<>(AuthenticationDto.builder().token(jwtToken).build(), "Getting of token is successfully");
+        }
+        else {
+            return new ErrorDataResult<>(null, "User does not exist by phone number");
+        }
     }
 }

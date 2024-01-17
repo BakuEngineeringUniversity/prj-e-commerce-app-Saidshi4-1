@@ -40,17 +40,33 @@ public class CategoryManager implements CategoryService {
 
         if (optionalCategory.isPresent()) {
             Category category = optionalCategory.get();
-            log.info("girdi");
             category.setImage(img);
             categoryDao.saveAndFlush(category);
-            log.info("chixdi");
+            log.info("updateImg.end.successfully");
             return new SuccessResult("Image update successfully");
         } else {
-            log.info("Islemir qaqas");
+            log.info("updateImg.end.unsuccessfully");
             return new ErrorResult("Category not found with id: " + id);
         }
     }
 
+    @Override
+    public Result updateName(int id, String name) {
+        log.info("updateName.start");
+
+        Optional<Category> optionalCategory = categoryDao.findById(id);
+
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            category.setName(name);
+            categoryDao.saveAndFlush(category);
+            log.info("updateName.end.successfully");
+            return new SuccessResult("Name update successfully");
+        } else {
+            log.info("update.end.unsuccessfully");
+            return new ErrorResult("Category not found with id: " + id);
+        }
+    }
 
 
     @Override
