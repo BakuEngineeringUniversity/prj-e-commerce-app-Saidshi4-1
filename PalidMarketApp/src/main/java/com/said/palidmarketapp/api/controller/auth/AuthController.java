@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/v1/auth")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/register")
+    @PostMapping("/v1/auth/register")
     public ResponseEntity<Result> register(@RequestBody UserRegisterRequestDto requestDto) {
         try {
             Result result = authService.register(requestDto);
@@ -33,7 +33,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/v1/auth/login")
     public ResponseEntity<DataResult<AuthenticationDto>> login(@RequestBody AuthRequestDto authRequestDto) {
         try {
             DataResult<AuthenticationDto> result = authService.authenticate(authRequestDto);

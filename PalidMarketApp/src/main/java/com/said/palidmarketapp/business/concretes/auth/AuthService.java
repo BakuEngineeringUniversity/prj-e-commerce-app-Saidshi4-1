@@ -41,6 +41,7 @@ public class AuthService {
     }
 
     public DataResult<AuthenticationDto> authenticate(AuthRequestDto authRequestDto) {
+        log.info("authService.authenticate.start");
         if (userRepository.existsByPhoneNumber(authRequestDto.getPhoneNumber())){
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -50,10 +51,12 @@ public class AuthService {
             );
             User user = userRepository.findUserByPhoneNumber(authRequestDto.getPhoneNumber());
             var jwtToken = jwtService.generateToken(user);
+            log.info("authService.authenticate.end.successfully");
             return new SuccessDataResult<>(AuthenticationDto.builder().token(jwtToken).build(), "Getting of token is successfully");
         }
         else {
-            return new ErrorDataResult<>(null, "User does not exist by phone number");
+            log.info("authService.authenticate.end.unsuccessfully");
+            return new  ErrorDataResult<>(null, "User does not exist by phone number");
         }
     }
 }

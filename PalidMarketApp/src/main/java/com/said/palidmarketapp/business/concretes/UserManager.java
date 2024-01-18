@@ -2,15 +2,18 @@ package com.said.palidmarketapp.business.concretes;
 
 import com.said.palidmarketapp.business.abstracts.UserService;
 import com.said.palidmarketapp.core.utilities.results.*;
+import com.said.palidmarketapp.dataAccess.abstracts.RoleDao;
 import com.said.palidmarketapp.dataAccess.abstracts.UserDao;
+import com.said.palidmarketapp.entities.Role;
 import com.said.palidmarketapp.entities.User;
 import com.said.palidmarketapp.mapper.dto.UserDto;
-import com.said.palidmarketapp.mapper.dto.UserLoginDto;
 import com.said.palidmarketapp.mapper.dto.UserSaveDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +22,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserManager implements UserService {
+    private final Logger logger = LoggerFactory.getLogger(UserManager.class);
     private final UserDao userDao;
+    private final RoleDao roleDao;
     private final ModelMapper modelMapper;
 
     @Override
@@ -32,8 +37,11 @@ public class UserManager implements UserService {
 
     @Transactional
     public Result deleteUserByPhoneNumber(String phoneNumber) {
+        User user = userDao.findUserByPhoneNumber(phoneNumber);
+        Role role = (Role) user.getRoles();
         log.info("application.deleteUserByPhoneNumber.start");
         if (userDao.existsByPhoneNumber(phoneNumber)) {
+            roleDao.delete(role);
             userDao.deleteByPhoneNumber(phoneNumber);
             log.info("application.deleteUserByPhoneNumber.end.successfully");
             return new SuccessResult("User deleted successfully");

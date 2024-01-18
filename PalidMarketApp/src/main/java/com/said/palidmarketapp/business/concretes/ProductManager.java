@@ -36,6 +36,7 @@ public class ProductManager implements ProductService {
 
     @Override
     public DataResult<List<ProductDto>> getByCategoryId(int id) {
+        log.info("productManager.getByCategoryId.start");
         List<Product> products = productDao.getByCategoryId(id);
         List<ProductDto> productDtos = products.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
@@ -51,15 +52,17 @@ public class ProductManager implements ProductService {
             }
         }
         if (modelMapper != null && categoryMapper != null) {
+            log.info("productManager.getByCategoryId.end.successfully");
             return new SuccessDataResult<>(productDtos, "Data Listed");
         } else {
+            log.info("productManager.getByCategoryId.end.unsuccessfully");
             return new ErrorDataResult<>(null,"ModelMapper or CategoryMapper is null");
         }
     }
 
     @Override
     public DataResult<List<ProductDto>> getAll() {
-
+        log.info("productManager.getAll.start");
         List<Product> products = productDao.findAll();
         List<ProductDto> productDtos = products.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
@@ -75,8 +78,10 @@ public class ProductManager implements ProductService {
             }
         }
         if (modelMapper != null && categoryMapper != null) {
+            log.info("productManager.getAll.end.successfully");
             return new SuccessDataResult<>(productDtos, "Data Listed");
         } else {
+            log.info("productManager.getByCategoryId.end.unsuccessfully");
             return new ErrorDataResult<>(null,"ModelMapper or CategoryMapper is null");
         }
     }

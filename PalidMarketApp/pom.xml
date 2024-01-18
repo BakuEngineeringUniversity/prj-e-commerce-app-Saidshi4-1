@@ -120,6 +120,17 @@
         </dependency>
 
 
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <!-- pom.xml -->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+
+
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+
+
+
+
     </dependencies>
 
     <build>
