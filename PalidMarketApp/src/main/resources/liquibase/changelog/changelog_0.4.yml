@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: your_name
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: varchar(255)
+              - column:
+                  name: last_name
+                  type: varchar(255)
+              - column:
+                  name: phone_number
+                  type: varchar(255)
+              - column:
+                  name: password
+                  type: varchar(255)
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_user_roles_user_id
+                    references: users(id)
+              - column:
+                  name: role_id
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_user_roles_role_id
+                    references: roles(id)

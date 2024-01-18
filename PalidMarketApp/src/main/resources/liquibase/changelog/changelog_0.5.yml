@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: Said Gulizada
+      changes:
+        - createTable:
+            tableName: carts
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: int
+              - column:
+                  name: product_id
+                  type: int
+        - addForeignKeyConstraint:
+            baseTableName: carts
+            baseColumnNames: user_id
+            constraintName: fk_carts_user_id
+            referencedTableName: users
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: carts
+            baseColumnNames: product_id
+            constraintName: fk_carts_product_id
+            referencedTableName: products
+            referencedColumnNames: id
