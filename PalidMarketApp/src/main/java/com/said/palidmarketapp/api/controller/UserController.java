@@ -36,7 +36,6 @@ public class UserController  {
         }
     }
 
-
     @DeleteMapping("/user/{phoneNumber}")
     public ResponseEntity<Result> deleteUser(@PathVariable String phoneNumber) {
         try {
@@ -50,7 +49,6 @@ public class UserController  {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
 
     @PutMapping("/user/update")
     public ResponseEntity<Result> updateUser(@RequestBody UserSaveDto newUser) {
