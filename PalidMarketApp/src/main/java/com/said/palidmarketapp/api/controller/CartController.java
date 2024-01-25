@@ -21,17 +21,17 @@ public class CartController {
     private final CartService cartService;
     private final CartManager cartManager;
 
-    @PostMapping("/add")
+    @PostMapping("/user/add")
     public Result addCart(@RequestBody CartDto cartDto) {
         return cartManager.add(cartDto);
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/user/{userId}")
     public DataResult<List<CartProductDto>> getCartProducts(@PathVariable Integer userId){
         return cartService.getCartProducts(userId);
     }
 
-    @GetMapping("/getAllCart")
+    @GetMapping("/admin/getAllCart")
     public DataResult<List<CartDto>> getAll(){
         return cartManager.getAll();
     }

@@ -10,5 +10,6 @@ public interface CategoryService {
    DataResult<Category> saveCategory(Category category);
    DataResult<List<Category>> getAllCategory();
    Result updateImg(int id, String img);
+   Result updateName(int id, String name);
    Result deleteCategory(Integer id);
 }

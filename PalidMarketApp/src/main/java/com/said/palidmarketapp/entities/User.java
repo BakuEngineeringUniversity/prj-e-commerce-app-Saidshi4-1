@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private List<Cart> cart;
 
     @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+            cascade = {CascadeType.MERGE, CascadeType.DETACH,CascadeType.REMOVE})
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

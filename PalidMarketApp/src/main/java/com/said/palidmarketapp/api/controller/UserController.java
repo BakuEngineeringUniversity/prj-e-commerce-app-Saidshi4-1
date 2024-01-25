@@ -9,6 +9,7 @@ import com.said.palidmarketapp.mapper.dto.UserSaveDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,29 +21,8 @@ import java.util.List;
 public class UserController  {
     private final UserService userService;
 
-    @PostMapping("/save")
-    public ResponseEntity<DataResult<UserSaveDto>> saveUser(@RequestBody UserSaveDto userSaveDto) {
-        try {
-            DataResult<UserSaveDto> resultUser = userService.saveUser(userSaveDto);
-            return ResponseEntity.ok(resultUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-    @PostMapping("/login")
-    public ResponseEntity<DataResult<UserLoginDto>> loginUser(@RequestBody UserLoginDto userLoginDto) {
-        try {
-            DataResult<UserLoginDto> resultUser = userService.loginUser(userLoginDto);
-
-                return ResponseEntity.ok(resultUser);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-
-    @GetMapping("/getAll")
+   // @PreAuthorize("hasRole(ADMIN)")
+    @GetMapping("/admin/getAll")
     public ResponseEntity<DataResult<List<UserDto>>> getAll(){
         try {
             DataResult<List<UserDto>> resultUser = userService.getAll();
@@ -56,8 +36,7 @@ public class UserController  {
         }
     }
 
-
-    @DeleteMapping("/{phoneNumber}")
+    @DeleteMapping("/user/{phoneNumber}")
     public ResponseEntity<Result> deleteUser(@PathVariable String phoneNumber) {
         try {
             Result result = userService.deleteUserByPhoneNumber(phoneNumber);
@@ -71,8 +50,7 @@ public class UserController  {
         }
     }
 
-
-    @PutMapping("/update")
+    @PutMapping("/user/update")
     public ResponseEntity<Result> updateUser(@RequestBody UserSaveDto newUser) {
         try {
             Result result = userService.updateUser(newUser);
@@ -87,7 +65,7 @@ public class UserController  {
     }
 
 
-    @PatchMapping("/{phoneNumber}/{firstName}")
+    @PatchMapping("/user/{phoneNumber}/{firstName}")
     public ResponseEntity<Result> updateFirstName(@PathVariable String phoneNumber, @PathVariable String firstName){
         try {
             Result result = userService.updateFirstName(phoneNumber, firstName);
@@ -101,7 +79,7 @@ public class UserController  {
         }
     }
 
-    @PatchMapping("/{phoneNumber}/{lastName}")
+    @PatchMapping("/user/{phoneNumber}/{lastName}")
     public ResponseEntity<Result> updateLastName(@PathVariable String phoneNumber, @PathVariable String lastName){
         try {
             Result result = userService.updateLastName(phoneNumber, lastName);
@@ -115,7 +93,7 @@ public class UserController  {
         }
     }
 
-    @GetMapping("/{phoneNumber}")
+    @GetMapping("/user/{phoneNumber}")
     public DataResult<Integer> findIdByPhoneNumber(@PathVariable String phoneNumber){
         return userService.findIdByPhoneNumber(phoneNumber);
     }

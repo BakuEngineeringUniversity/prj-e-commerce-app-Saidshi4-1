@@ -12,4 +12,6 @@ public interface ProductService {
     Result add(ProductDto productDto);
     DataResult<List<ProductDto>> getByCategoryId(int id);
     DataResult<List<ProductDto>> getAll();
+    Result deleteProduct(int id);
+    Result updatePrice(int id, double price);
 }

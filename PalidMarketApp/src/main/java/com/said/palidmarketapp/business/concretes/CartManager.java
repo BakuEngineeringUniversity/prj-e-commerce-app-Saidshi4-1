@@ -4,8 +4,10 @@ import com.said.palidmarketapp.business.abstracts.CartService;
 import com.said.palidmarketapp.core.utilities.results.*;
 import com.said.palidmarketapp.dataAccess.abstracts.CartDao;
 import com.said.palidmarketapp.entities.Cart;
+import com.said.palidmarketapp.entities.Product;
 import com.said.palidmarketapp.mapper.dto.CartDto;
 import com.said.palidmarketapp.mapper.dto.CartProductDto;
+import com.said.palidmarketapp.mapper.dto.ProductDto;
 import com.said.palidmarketapp.mapstruct.CartMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +32,10 @@ public class CartManager implements CartService {
         return new SuccessResult("Cart add successfully");
     }
     @Override
-    public DataResult<List<CartProductDto>> getCartProducts(Integer phoneNumber) {
+    public DataResult<List<CartProductDto>> getCartProducts(Integer userId) {
         log.info("application.getCartProducts.start");
-        List<Cart> carts = cartDao.findCartByUserId(phoneNumber);
-        if(carts != null){
+        List<Cart> carts = cartDao.findCartByUserId(userId);
+        if(!carts.isEmpty()){
             log.info("application.getCartProducts.start.successfully");
             return new SuccessDataResult<>(cartMapper.mapEntityToCartDtos(carts), "Updating is successfully");
         }

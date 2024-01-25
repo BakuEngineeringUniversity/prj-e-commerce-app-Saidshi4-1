@@ -19,7 +19,7 @@ import java.util.List;
 public class CategoryController   {
     private final CategoryService categoryService;
 
-    @PostMapping("/save")
+    @PostMapping("/admin/save")
     public ResponseEntity<DataResult<Category>> saveUser(@RequestBody Category category) {
         try {
             DataResult<Category> result = categoryService.saveCategory(category);
@@ -29,7 +29,7 @@ public class CategoryController   {
         }
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/user/getAll")
     public ResponseEntity<DataResult<List<Category>>> getAllCategories(){
         try {
             DataResult<List<Category>> result = categoryService.getAllCategory();
@@ -43,7 +43,7 @@ public class CategoryController   {
         }
     }
 
-    @PatchMapping("/{categoryId}/{img}")
+    @PatchMapping("/admin/{categoryId}/{img}")
     public ResponseEntity<Result> updateImage(@PathVariable int categoryId, @PathVariable String img) {
         try {
             Result result = categoryService.updateImg(categoryId, img);
@@ -57,7 +57,21 @@ public class CategoryController   {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @PatchMapping("/admin/{categoryId}/{name}")
+    public ResponseEntity<Result> updateName(@PathVariable int categoryId, @PathVariable String name) {
+        try {
+            Result result = categoryService.updateName(categoryId, name);
+            if (result.isSuccess()) {
+                return ResponseEntity.ok(result);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<Result> deleteCategory(@PathVariable int id) {
         try {
             Result result = categoryService.deleteCategory(id);
